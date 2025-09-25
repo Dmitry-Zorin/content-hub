@@ -1,0 +1,9 @@
+{
+	"crons": [
+		{
+			"path": "/api/cron/fetch",
+			"schedule": "0 * * * *",
+			"headers": { "x-cron-secret": "@CRON_SECRET" }
+		}
+	]
+}

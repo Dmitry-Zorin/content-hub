@@ -1,0 +1,15 @@
+@font-face {
+	font-family: 'Golos Text';
+	font-style: normal;
+	font-weight: 400 600;
+	font-display: block;
+	src: url('../fonts/golos-text.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Roboto Flex';
+	font-style: normal;
+	font-weight: 400 600;
+	font-display: block;
+	src: url('../fonts/roboto-flex.woff2') format('woff2');
+}
