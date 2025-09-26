@@ -1,20 +1,5 @@
 import * as React from 'react'
 
-// Variant 2 (patched): Fixes SyntaxError from inline SVG data URL by
-// safely encoding the SVG string before embedding it in CSS.
-// - Still auto-driven by public YouTube-like data shape (mocked)
-// - Removed manual schedule + theme circles
-// - Adds lightweight self-tests you can call: runSelfTests()
-
-// -------------------- Palette & Helpers --------------------
-const PALETTE = {
-	accent: '#22c55e',
-	accentSoft: '#86efac',
-	accentDeep: '#16a34a',
-	graphite: '#2a2f38',
-	ink: '#0b0f14',
-}
-
 function cx(...s: (string | false | undefined)[]) {
 	return s.filter(Boolean).join(' ')
 }
@@ -192,7 +177,7 @@ function GlassCard({
 		<div
 			className={cx(
 				'rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-white md:p-6',
-				'shadow-xl shadow-black/20 backdrop-blur-xl',
+				'shadow-sm shadow-black/20 backdrop-blur-xl',
 				'transition-colors hover:border-white/20',
 				className,
 			)}
@@ -321,7 +306,7 @@ export default function CreatorHomeMock(): React.JSX.Element {
 				<div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
 					<div className="flex items-start gap-4">
 						<div className="relative">
-							<div className="size-20 rounded-2xl bg-gradient-to-br from-emerald-400 to-lime-300 p-[2px] shadow-lg shadow-emerald-900/30">
+							<div className="size-20 rounded-2xl bg-gradient-to-br from-emerald-400 to-lime-300 p-[2px] shadow-sm shadow-emerald-900/30">
 								<div className="size-full rounded-[14px] bg-[#0c1116]" />
 							</div>
 							{channel.isLive ?

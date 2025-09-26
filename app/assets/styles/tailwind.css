@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import "./theme.css"; 
 
 @theme {
 	--font-sans: 'Roboto Flex', 'Golos Text', sans-serif;
@@ -24,7 +23,7 @@
 			hsl(217deg 15% 50% / 0.04735921336966084),
 		0 1.9999999999999996px 5.999999999999998px
 			hsl(217deg 15% 50% / 0.06000000000000001);
-			
+
 	--shadow-md:
 		0 0.09347165370768722px 0.28041496112306163px
 			hsl(217deg 15% 50% / 0.01264078663033916),
@@ -97,11 +96,11 @@
 
 		::-webkit-scrollbar-track,
 		::-webkit-scrollbar-corner {
-			@apply bg-light rounded-full;
+			/* @apply bg-light rounded-full; */
 		}
 
 		::-webkit-scrollbar-thumb {
-			@apply bg-gray-light hover:bg-gray/40 rounded-full bg-clip-content;
+			/* @apply bg-gray-light hover:bg-gray/40 rounded-full bg-clip-content; */
 		}
 	}
 
