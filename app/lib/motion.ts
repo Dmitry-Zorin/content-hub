@@ -13,5 +13,5 @@ export function springTransition<Duration extends number>(duration: Duration) {
 		type: 'spring',
 		bounce: 0,
 		duration,
-	} as const satisfies {type: 'spring'}& SpringOptions
+	} as const satisfies { type: 'spring' } & SpringOptions
 }
