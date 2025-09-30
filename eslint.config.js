@@ -82,6 +82,12 @@ export default defineConfig([
 			],
 		},
 	},
+	{
+		files: ['supabase/functions/**/*'],
+		rules: {
+			'import/no-unresolved': 'off',
+		},
+	},
 	eslintConfigPrettier,
 	eslintPluginPrettier,
 ])

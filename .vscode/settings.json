@@ -1,4 +1,4 @@
 {
-	"cSpell.words": ["isbot", "Raphson", "VITE"],
+	"cSpell.words": ["apikey", "isbot", "jget", "Raphson", "supabase", "VITE"],
 	"typescript.tsdk": "node_modules/typescript/lib"
 }

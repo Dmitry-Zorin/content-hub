@@ -31,6 +31,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<meta
+					http-equiv="Content-Security-Policy"
+					content="img-src 'self' https://*.ggpht.com https://*.googleusercontent.com https://*.ytimg.com data:;"
+				/>
 				<Meta />
 				<Links />
 			</head>
