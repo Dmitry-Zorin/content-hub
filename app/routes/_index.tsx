@@ -1,16 +1,17 @@
 import * as React from 'react'
-import { useLoaderData, type LoaderFunctionArgs } from 'react-router'
+import { Link, useLoaderData, type LoaderFunctionArgs } from 'react-router'
+import { ExternalLink } from '~/components/external-link'
 import {
 	getChannelBundleByHandle,
 	type YT_Channel,
 	type YT_Playlist,
 	type YT_Video,
-} from '~/services/ytClient'
+} from '~/services/yt-client'
 
 export interface HomeData {
 	channel: {
 		title: string
-		customUrl: string
+		handle: string
 		subscriberCount: number
 		viewCount: number
 		videoCount: number
@@ -75,7 +76,7 @@ function YouTubeGlyph(props: React.SVGProps<SVGSVGElement>) {
 function AccentNoiseBackground() {
 	const noiseSvg = React.useMemo(
 		() =>
-			`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">` +
+			`<svg xmlns="http://w3.org/2000/svg" viewBox="0 0 100 100">` +
 			`<filter id="n">` +
 			`<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/>` +
 			`<feColorMatrix type="saturate" values="0"/>` +
@@ -142,13 +143,13 @@ function VideoCard({ video }: { video: UiVideo }) {
 		day: 'numeric',
 	})
 	return (
-		<a
-			href={`https://www.youtube.com/watch?v=${video.id}`}
+		<ExternalLink
+			aria-label={video.title}
+			href={`https://youtube.com/watch?v=${video.id}`}
 			className={cx(
 				'group relative block focus:outline-none',
 				'rounded-2xl ring-0 focus-visible:ring-2 focus-visible:ring-emerald-400/70',
 			)}
-			aria-label={video.title}
 		>
 			<GlassCard className="h-full p-3 md:p-4">
 				<div className="relative">
@@ -168,7 +169,7 @@ function VideoCard({ video }: { video: UiVideo }) {
 					</div>
 				</div>
 			</GlassCard>
-		</a>
+		</ExternalLink>
 	)
 }
 
@@ -205,9 +206,8 @@ function MetaPill({ label, value }: { label: string; value: string }) {
 
 function PlaylistChip({ playlist }: { playlist: UiPlaylist }) {
 	return (
-		<a
-			key={playlist.id}
-			href={`https://www.youtube.com/playlist?list=${playlist.id}`}
+		<ExternalLink
+			href={`https://youtube.com/playlist?list=${playlist.id}`}
 			className="min-w-[12rem] rounded-xl border border-white/10 bg-white/5 p-3 hover:border-white/20"
 		>
 			<div className="mb-2 h-20 w-full overflow-hidden rounded-lg bg-black/40">
@@ -223,7 +223,7 @@ function PlaylistChip({ playlist }: { playlist: UiPlaylist }) {
 			</div>
 			<div className="line-clamp-1 text-sm font-medium">{playlist.title}</div>
 			<div className="text-xs text-white/60">{playlist.count} videos</div>
-		</a>
+		</ExternalLink>
 	)
 }
 
@@ -240,8 +240,7 @@ function isoDurationToClock(iso?: string): string {
 }
 
 export async function loader(_: LoaderFunctionArgs): Promise<HomeData> {
-	const handle =
-		import.meta.env.VITE_YT_CHANNEL_ID_OR_HANDLE || '@GoogleDevelopers'
+	const handle = import.meta.env.VITE_YT_CHANNEL_HANDLE as string
 
 	// Single typed call that does all underlying requests
 	const bundle = await getChannelBundleByHandle(handle)
@@ -263,7 +262,7 @@ export async function loader(_: LoaderFunctionArgs): Promise<HomeData> {
 		)
 
 	// Videos (limit 12 for UI) from already-fetched details, fully typed
-	const videos: UiVideo[] = (bundle.details.items ?? []).slice(0, 12).map(
+	const videos: UiVideo[] = (bundle.details.items ?? []).map(
 		(v: YT_Video): UiVideo => ({
 			id: String(v.id ?? ''),
 			title: v.snippet?.title ?? 'Untitled',
@@ -280,9 +279,8 @@ export async function loader(_: LoaderFunctionArgs): Promise<HomeData> {
 	const isLive = (bundle.live.items ?? []).length > 0
 
 	const channel = {
+		handle,
 		title: ch.snippet?.title ?? 'Channel',
-		customUrl:
-			ch.snippet?.customUrl ?? ch.snippet?.localized?.customUrl ?? handle,
 		subscriberCount: Number(ch.statistics?.subscriberCount ?? 0),
 		viewCount: Number(ch.statistics?.viewCount ?? 0),
 		videoCount: Number(ch.statistics?.videoCount ?? 0),
@@ -350,31 +348,31 @@ export default function CreatorHomeMock(): React.JSX.Element {
 								{channel.title}
 							</h1>
 							<div className="mt-3 flex flex-wrap gap-2">
-								<a
+								<ExternalLink
+									href={`https://youtube.com/${channel.handle}?sub_confirmation=1`}
 									className="inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-white/90 shadow-sm shadow-black/10 backdrop-blur-md"
-									href="#"
 								>
 									<YouTubeGlyph />
 									Subscribe
-								</a>
-								<a
+								</ExternalLink>
+								<ExternalLink
+									href={`https://youtube.com/${channel.handle}/videos`}
 									className="inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-white/90 shadow-sm shadow-black/10 backdrop-blur-md"
-									href="#"
 								>
 									Videos
-								</a>
-								<a
+								</ExternalLink>
+								<ExternalLink
+									href={`https://youtube.com/${channel.handle}/playlists`}
 									className="inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-white/90 shadow-sm shadow-black/10 backdrop-blur-md"
-									href="#"
 								>
 									Playlists
-								</a>
-								<a
+								</ExternalLink>
+								<ExternalLink
+									href={`https://youtube.com/${channel.handle}/live`}
 									className="inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-white/90 shadow-sm shadow-black/10 backdrop-blur-md"
-									href="#"
 								>
 									Live
-								</a>
+								</ExternalLink>
 							</div>
 						</div>
 					</div>
@@ -398,9 +396,12 @@ export default function CreatorHomeMock(): React.JSX.Element {
 						<SectionHeader
 							title="Latest Videos"
 							action={
-								<a href="#" className="text-xs text-white/70 hover:text-white">
+								<ExternalLink
+									href={`https://youtube.com/${channel.handle}/videos`}
+									className="text-xs text-white/70 hover:text-white"
+								>
 									View all
-								</a>
+								</ExternalLink>
 							}
 						/>
 						<div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -413,9 +414,12 @@ export default function CreatorHomeMock(): React.JSX.Element {
 						<SectionHeader
 							title="Playlists"
 							action={
-								<a href="#" className="text-xs text-white/70 hover:text-white">
+								<ExternalLink
+									href={`https://youtube.com/${channel.handle}/playlists`}
+									className="text-xs text-white/70 hover:text-white"
+								>
 									View all
-								</a>
+								</ExternalLink>
 							}
 						/>
 						<div className="mt-4 flex gap-3 overflow-x-auto pb-2 [scrollbar-color:theme(colors.emerald.500)_transparent]">
@@ -434,7 +438,7 @@ export default function CreatorHomeMock(): React.JSX.Element {
 						<ul className="mt-4 grid grid-cols-2 gap-3 text-sm">
 							<li className="rounded-xl bg-white/5 p-3 text-white/80">
 								<div className="text-xs text-white/60">Handle</div>
-								{channel.customUrl}
+								{channel.handle}
 							</li>
 							<li className="rounded-xl bg-white/5 p-3 text-white/80">
 								<div className="text-xs text-white/60">Country</div>
@@ -459,7 +463,7 @@ export default function CreatorHomeMock(): React.JSX.Element {
 							</li>
 							<li className="col-span-2 rounded-xl bg-white/5 p-3 text-white/80">
 								<div className="text-xs text-white/60">Keywords</div>
-								<div className="line-clamp-2">{channel.keywords || '—'}</div>
+								<div>{channel.keywords || '—'}</div>
 							</li>
 						</ul>
 					</GlassCard>
@@ -473,9 +477,9 @@ export default function CreatorHomeMock(): React.JSX.Element {
 								{ name: 'Live', desc: 'Streams & VODs' },
 								{ name: 'Playlists', desc: 'Curated series' },
 							].map((c) => (
-								<a
+								<Link
+									to="/"
 									key={c.name}
-									href="#"
 									className="group flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-3 hover:border-white/20"
 								>
 									<div className="flex items-center gap-3">
@@ -488,7 +492,7 @@ export default function CreatorHomeMock(): React.JSX.Element {
 										</div>
 									</div>
 									<YouTubeGlyph className="text-white/70" />
-								</a>
+								</Link>
 							))}
 						</div>
 					</GlassCard>

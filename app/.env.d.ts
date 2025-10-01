@@ -2,7 +2,7 @@
 
 interface ImportMetaEnv {
 	readonly VITE_YT_API_KEY: string
-	readonly VITE_YT_CHANNEL_ID_OR_HANDLE?: string
+	readonly VITE_YT_CHANNEL_HANDLE?: string
 }
 
 interface ImportMeta {

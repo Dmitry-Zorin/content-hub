@@ -1,7 +1,7 @@
 import '@supabase/functions-js/edge-runtime.d.ts'
 import { createClient } from 'npm:@supabase/supabase-js'
 
-const API_BASE = 'https://www.googleapis.com/youtube/v3'
+const API_BASE = 'https://googleapis.com/youtube/v3'
 const ALLOWED_ORIGINS: [string, ...string[]] = ['http://localhost:5173']
 
 const YT_KEY = Deno.env.get('YT_KEY') ?? ''

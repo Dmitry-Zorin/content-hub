@@ -27,7 +27,7 @@ export default defineConfig({
 		proxy: {
 			// anything starting with /yt will be proxied to YouTube
 			'/yt': {
-				target: 'https://www.youtube.com',
+				target: 'https://youtube.com',
 				changeOrigin: true,
 				secure: true,
 				rewrite: (path) => path.replace(/^\/yt/, ''),
